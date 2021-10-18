@@ -1,11 +1,14 @@
+const { Pool } = require("pg");
+
 const {
   DATABASE_URL = "postgresql://localhost/cars?user=postgres",
 } = process.env;
 
-const { Pool } = require("pg");
+
 const pool = new Pool({
   connectionString: DATABASE_URL,
 });
+
 module.exports = {
   query: (text, params, callback) => {
     const start = Date.now()

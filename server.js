@@ -119,22 +119,22 @@ app.delete("/api/v1/cars/:id", (req, res) => {
   });
 });
 
-// app.get("/api/v1/cars/join/owner", (req, res) => {
-//   const QUERY = "SELECT * FROM cars AS T1";
-//   let JOIN = " LEFT JOIN owners AS T2 ON T1.owner = T2.id"; // try changing 'LEFT' for 'RIGHT"
+app.get("/api/v1/cars/join/owner", (req, res) => {
+  const QUERY = "SELECT * FROM cars AS T1";
+  let JOIN = " RIGHT JOIN owners AS T2 ON T1.owner = T2.id"; // try changing 'LEFT' for 'RIGHT"
 
-//   const fullQuery = `${QUERY}${JOIN}`;
-//   console.log("fullQuery", fullQuery);
+  const fullQuery = `${QUERY}${JOIN}`;
+  console.log("fullQuery", fullQuery);
 
-//   db.query(fullQuery, (error, results) => {
-//     if (error) {
-//       // throw error;
-//       console.log(error);
-//       return res.status(500).send(error);
-//     }
-//     res.status(200).json(results.rows);
-//   });
-// });
+  db.query(fullQuery, (error, results) => {
+    if (error) {
+      // throw error;
+      console.log(error);
+      return res.status(500).send(error);
+    }
+    res.status(200).json(results.rows);
+  });
+});
 
 app.all("*", (req, res) => {
   res.sendStatus(404);
