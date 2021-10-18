@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express"); // express server; this is a constructor
 // const { v4: uuidv4 } = require('uuid');
 const app = express(); // the constructor to create an app
@@ -102,7 +103,6 @@ app.put("/api/v1/cars/:id", (req, res) => {
     console.log("results", results);
     res.status(200).send(`User modified with ID: ${carId}`);
   });
-
 });
 
 app.delete("/api/v1/cars/:id", (req, res) => {
