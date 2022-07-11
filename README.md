@@ -6,7 +6,7 @@ This app demos a node server with API
 
 There are 2 scripts:
 
-1. whatsonport - tells you what process is on a particular port. Usage `whatsonport 3000`
+1. whatsonport - tells you what process is on a particular port. Usage: `whatsonport 3000`
 
 2. stop - stops program bound to a port. Usage: `stop 5000`
 
