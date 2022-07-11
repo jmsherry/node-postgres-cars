@@ -34,7 +34,7 @@ app.get("/api/v1/cars/:id?", (req, res) => {
   const fullQuery = `${QUERY}${CASE}${SORT}`;
   console.log("fullQuery", fullQuery);
   db.query(fullQuery, (error, results) => {
-    console.log("in");
+    // console.log("in");
     if (error) {
       // throw error;
       console.log("error", error);
@@ -59,7 +59,7 @@ app.post("/api/v1/cars", (req, res) => {
 
   const fullQuery = `INSERT INTO cars (${columns}) VALUES (${values
     .map((v, i) => `$${i + 1}`)
-    .join(", ")})`;
+    .join(", ")}) RETURNING *`;
   console.log("fullQuery", fullQuery);
   console.log("values", values);
 
@@ -93,7 +93,7 @@ app.put("/api/v1/cars/:id", (req, res) => {
     }
   }
 
-  const query = `UPDATE cars SET ${setStr} WHERE id = ${carId}`;
+  const query = `UPDATE cars SET ${setStr} WHERE id = ${carId} RETURNING *`;
   console.log("full query", query);
 
   db.query(query, (error, results) => {
@@ -101,7 +101,7 @@ app.put("/api/v1/cars/:id", (req, res) => {
       throw error;
     }
     console.log("results", results);
-    res.status(200).send(`User modified with ID: ${carId}`);
+    res.status(200).send(results.rows[0]);
   });
 });
 
@@ -110,11 +110,12 @@ app.delete("/api/v1/cars/:id", (req, res) => {
   const { id: carId } = req.params;
 
   console.log("carToBeDeleted", carId);
-  db.query("DELETE FROM cars WHERE id = $1", [carId], (error) => {
+  db.query("DELETE FROM cars WHERE id = $1 RETURNING *", [carId], (error, results) => {
     if (error) {
       return res.status(500).send(error);
     }
-    res.status(200).send(`User deleted with ID: ${carId}`);
+    console.log("results", results);
+    res.status(200).send(results.rows[0]);
     // res.sendStatus(204)
   });
 });
