@@ -1,20 +1,15 @@
 require("dotenv").config();
 const express = require("express"); // express server; this is a constructor
+const cors = require('cors');
 // const { v4: uuidv4 } = require('uuid');
 const app = express(); // the constructor to create an app
 const db = require("./db");
 
-const {
-  PORT = 3000,
-  // DATABASE_URL = "postgresql://localhost/cars?user=postgres",
-} = process.env;
-
-process.on("unhandledRejection", (err) => {
-  console.log(err);
-});
 
 app.use(express.static("public")); //is it inside thisfolder and use; the order of app uses matter
 app.use(express.json()); //all json is properly passed
+app.use(cors());
+
 
 app.get("/api/v1/cars/:id?", (req, res) => {
   const { id } = req.params;
@@ -145,9 +140,7 @@ app.all("*", (req, res) => {
   res.sendStatus(404);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+module.exports = app;
 
 // CAR
 
