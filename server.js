@@ -46,7 +46,7 @@ app.get("/api/v1/cars/:id?", (req, res) => {
 });
 
 app.post("/api/v1/cars", (req, res) => {
-  console.log("Adding", req.body);
+  console.log("Adding", req.body); // { name: 'bugatti', bhp: 123 }
   const fields = Object.keys(req.body); // again, doing this for the whole of req.body is a bad idea. re.body.data would be a better place to put it.
   const columns = fields.join(", ");
   const values = [];
@@ -110,19 +110,23 @@ app.delete("/api/v1/cars/:id", (req, res) => {
   const { id: carId } = req.params;
 
   console.log("carToBeDeleted", carId);
-  db.query("DELETE FROM cars WHERE id = $1 RETURNING *", [carId], (error, results) => {
-    if (error) {
-      return res.status(500).send(error);
+  db.query(
+    "DELETE FROM cars WHERE id = $1 RETURNING *",
+    [carId],
+    (error, results) => {
+      if (error) {
+        return res.status(500).send(error);
+      }
+      console.log("results", results);
+      res.status(200).send(results.rows[0]);
+      // res.sendStatus(204)
     }
-    console.log("results", results);
-    res.status(200).send(results.rows[0]);
-    // res.sendStatus(204)
-  });
+  );
 });
 
 app.get("/api/v1/cars/join/owner", (req, res) => {
   const QUERY = "SELECT * FROM cars AS T1";
-  let JOIN = " RIGHT JOIN owners AS T2 ON T1.owner = T2.id"; // try changing 'LEFT' for 'RIGHT"
+  let JOIN = " INNER JOIN owners AS T2 ON T1.owner = T2.id"; // try changing 'LEFT' for 'RIGHT' or 'INNER' or 'FULL OUTER' "
 
   const fullQuery = `${QUERY}${JOIN}`;
   console.log("fullQuery", fullQuery);
