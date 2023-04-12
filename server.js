@@ -96,7 +96,7 @@ app.put("/api/v1/cars/:id", (req, res) => {
   console.log(setStr);
   const query = `UPDATE cars SET ${setStr.slice(
     0,
-    setStr.length - 2
+    setStr.length - 2 // get rid of last ', '
   )} WHERE id = ${carId} RETURNING *`;
   console.log("full query", query);
 
