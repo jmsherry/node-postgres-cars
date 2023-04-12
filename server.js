@@ -1,15 +1,13 @@
 require("dotenv").config();
 const express = require("express"); // express server; this is a constructor
-const cors = require('cors');
+const cors = require("cors");
 // const { v4: uuidv4 } = require('uuid');
 const app = express(); // the constructor to create an app
 const db = require("./db");
 
-
 app.use(express.static("public")); //is it inside thisfolder and use; the order of app uses matter
 app.use(express.json()); //all json is properly passed
 app.use(cors());
-
 
 app.get("/api/v1/cars/:id?", (req, res) => {
   const { id } = req.params;
@@ -34,6 +32,9 @@ app.get("/api/v1/cars/:id?", (req, res) => {
       // throw error;
       console.log("error", error);
       return res.status(500).send(error);
+    }
+    if (!results?.rows?.length) {
+      return res.sendStatus(404);
     }
     // console.log("results", results);
     res.status(200).json(results.rows);
@@ -65,6 +66,9 @@ app.post("/api/v1/cars", (req, res) => {
       return res.status(500).send(error);
     }
     console.log("done", results);
+    if (!results?.rows?.length) {
+      return res.sendStatus(404);
+    }
     res.status(200).send(results);
   });
 });
@@ -84,11 +88,16 @@ app.put("/api/v1/cars/:id", (req, res) => {
 
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
-      setStr += `${key} = '${data[key]}'`; // <-- like this
+      setStr += `${key} = ${
+        typeof data[key] === "string" ? `'${data[key]}'` : data[key]
+      }, `; // <-- like this
     }
   }
-
-  const query = `UPDATE cars SET ${setStr} WHERE id = ${carId} RETURNING *`;
+  console.log(setStr);
+  const query = `UPDATE cars SET ${setStr.slice(
+    0,
+    setStr.length - 2
+  )} WHERE id = ${carId} RETURNING *`;
   console.log("full query", query);
 
   db.query(query, (error, results) => {
@@ -96,6 +105,9 @@ app.put("/api/v1/cars/:id", (req, res) => {
       throw error;
     }
     console.log("results", results);
+    if (!results?.rows?.length) {
+      return res.sendStatus(404);
+    }
     res.status(200).send(results.rows[0]);
   });
 });
@@ -113,6 +125,9 @@ app.delete("/api/v1/cars/:id", (req, res) => {
         return res.status(500).send(error);
       }
       console.log("results", results);
+      if (!results?.rows?.length) {
+        return res.sendStatus(404);
+      }
       res.status(200).send(results.rows[0]);
       // res.sendStatus(204)
     }
