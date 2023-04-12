@@ -65,7 +65,7 @@ app.post("/api/v1/cars", (req, res) => {
       return res.status(500).send(error);
     }
     console.log("done", results);
-    res.status(201).send(results);
+    res.status(200).send(results);
   });
 });
 
