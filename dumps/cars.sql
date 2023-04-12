@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.0
--- Dumped by pg_dump version 14.0
+-- Dumped from database version 14.7 (Homebrew)
+-- Dumped by pg_dump version 14.7 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -108,21 +108,20 @@ ALTER SEQUENCE public.cars_id_seq OWNED BY public.cars.id;
 
 
 --
--- Name: fish; Type: TABLE; Schema: public; Owner: postgres
+-- Name: fish; Type: TABLE; Schema: public; Owner: jamessherry
 --
 
 CREATE TABLE public.fish (
     id integer NOT NULL,
     name character varying(50) NOT NULL,
-    price numeric NOT NULL,
-    owner integer
+    price numeric NOT NULL
 );
 
 
-ALTER TABLE public.fish OWNER TO postgres;
+ALTER TABLE public.fish OWNER TO jamessherry;
 
 --
--- Name: fish_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: fish_id_seq; Type: SEQUENCE; Schema: public; Owner: jamessherry
 --
 
 CREATE SEQUENCE public.fish_id_seq
@@ -134,52 +133,17 @@ CREATE SEQUENCE public.fish_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.fish_id_seq OWNER TO postgres;
+ALTER TABLE public.fish_id_seq OWNER TO jamessherry;
 
 --
--- Name: fish_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: fish_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jamessherry
 --
 
 ALTER SEQUENCE public.fish_id_seq OWNED BY public.fish.id;
 
 
 --
--- Name: fishermen; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.fishermen (
-    id integer NOT NULL,
-    name character varying(30),
-    age numeric
-);
-
-
-ALTER TABLE public.fishermen OWNER TO postgres;
-
---
--- Name: fishermen_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.fishermen_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.fishermen_id_seq OWNER TO postgres;
-
---
--- Name: fishermen_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.fishermen_id_seq OWNED BY public.fishermen.id;
-
-
---
--- Name: owners; Type: TABLE; Schema: public; Owner: postgres
+-- Name: owners; Type: TABLE; Schema: public; Owner: jamessherry
 --
 
 CREATE TABLE public.owners (
@@ -188,10 +152,10 @@ CREATE TABLE public.owners (
 );
 
 
-ALTER TABLE public.owners OWNER TO postgres;
+ALTER TABLE public.owners OWNER TO jamessherry;
 
 --
--- Name: owners_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: owners_id_seq; Type: SEQUENCE; Schema: public; Owner: jamessherry
 --
 
 CREATE SEQUENCE public.owners_id_seq
@@ -203,13 +167,50 @@ CREATE SEQUENCE public.owners_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.owners_id_seq OWNER TO postgres;
+ALTER TABLE public.owners_id_seq OWNER TO jamessherry;
 
 --
--- Name: owners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: owners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jamessherry
 --
 
 ALTER SEQUENCE public.owners_id_seq OWNED BY public.owners.id;
+
+
+--
+-- Name: pets; Type: TABLE; Schema: public; Owner: jamessherry
+--
+
+CREATE TABLE public.pets (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    type character varying(50) NOT NULL,
+    weight numeric,
+    owner integer
+);
+
+
+ALTER TABLE public.pets OWNER TO jamessherry;
+
+--
+-- Name: pets_id_seq; Type: SEQUENCE; Schema: public; Owner: jamessherry
+--
+
+CREATE SEQUENCE public.pets_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pets_id_seq OWNER TO jamessherry;
+
+--
+-- Name: pets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: jamessherry
+--
+
+ALTER SEQUENCE public.pets_id_seq OWNED BY public.pets.id;
 
 
 --
@@ -227,24 +228,24 @@ ALTER TABLE ONLY public.cars2 ALTER COLUMN id SET DEFAULT nextval('public.cars2_
 
 
 --
--- Name: fish id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: fish id; Type: DEFAULT; Schema: public; Owner: jamessherry
 --
 
 ALTER TABLE ONLY public.fish ALTER COLUMN id SET DEFAULT nextval('public.fish_id_seq'::regclass);
 
 
 --
--- Name: fishermen id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.fishermen ALTER COLUMN id SET DEFAULT nextval('public.fishermen_id_seq'::regclass);
-
-
---
--- Name: owners id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: owners id; Type: DEFAULT; Schema: public; Owner: jamessherry
 --
 
 ALTER TABLE ONLY public.owners ALTER COLUMN id SET DEFAULT nextval('public.owners_id_seq'::regclass);
+
+
+--
+-- Name: pets id; Type: DEFAULT; Schema: public; Owner: jamessherry
+--
+
+ALTER TABLE ONLY public.pets ALTER COLUMN id SET DEFAULT nextval('public.pets_id_seq'::regclass);
 
 
 --
@@ -254,6 +255,8 @@ ALTER TABLE ONLY public.owners ALTER COLUMN id SET DEFAULT nextval('public.owner
 COPY public.cars (id, make, bhp, avatar_url, owner) FROM stdin;
 3	james	1	https://static.thenounproject.com/png/449586-200.png	\N
 4	james	1	https://static.thenounproject.com/png/449586-200.png	\N
+5	mini	234	https://static.thenounproject.com/png/449586-200.png	\N
+6	citroen	234	https://static.thenounproject.com/png/449586-200.png	2
 \.
 
 
@@ -268,34 +271,34 @@ COPY public.cars2 (id, name, bhp, avatar_url) FROM stdin;
 
 
 --
--- Data for Name: fish; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: fish; Type: TABLE DATA; Schema: public; Owner: jamessherry
 --
 
-COPY public.fish (id, name, price, owner) FROM stdin;
-1	cod	500	1
-2	monkfish	500	2
-4	haddock	400	2
-5	monkfish2	700	2
+COPY public.fish (id, name, price) FROM stdin;
+2	cod	500
+3	haddock	400
+4	monkfish	700
+5	cod	500
+6	haddock	400
+7	monkfish	700
 \.
 
 
 --
--- Data for Name: fishermen; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.fishermen (id, name, age) FROM stdin;
-1	Robert	38
-2	James	43
-\.
-
-
---
--- Data for Name: owners; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: owners; Type: TABLE DATA; Schema: public; Owner: jamessherry
 --
 
 COPY public.owners (id, name) FROM stdin;
 1	James Sherry
 2	Robert Sherry
+\.
+
+
+--
+-- Data for Name: pets; Type: TABLE DATA; Schema: public; Owner: jamessherry
+--
+
+COPY public.pets (id, name, type, weight, owner) FROM stdin;
 \.
 
 
@@ -310,28 +313,28 @@ SELECT pg_catalog.setval('public.cars2_id_seq', 17, true);
 -- Name: cars_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cars_id_seq', 4, true);
+SELECT pg_catalog.setval('public.cars_id_seq', 9, true);
 
 
 --
--- Name: fish_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: fish_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jamessherry
 --
 
-SELECT pg_catalog.setval('public.fish_id_seq', 5, true);
-
-
---
--- Name: fishermen_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.fishermen_id_seq', 2, true);
+SELECT pg_catalog.setval('public.fish_id_seq', 7, true);
 
 
 --
--- Name: owners_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: owners_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jamessherry
 --
 
 SELECT pg_catalog.setval('public.owners_id_seq', 2, true);
+
+
+--
+-- Name: pets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jamessherry
+--
+
+SELECT pg_catalog.setval('public.pets_id_seq', 8, true);
 
 
 --
@@ -351,7 +354,7 @@ ALTER TABLE ONLY public.cars
 
 
 --
--- Name: fish fish_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: fish fish_pkey; Type: CONSTRAINT; Schema: public; Owner: jamessherry
 --
 
 ALTER TABLE ONLY public.fish
@@ -359,19 +362,19 @@ ALTER TABLE ONLY public.fish
 
 
 --
--- Name: fishermen fishermen_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.fishermen
-    ADD CONSTRAINT fishermen_pkey PRIMARY KEY (id);
-
-
---
--- Name: owners owners_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: owners owners_pkey; Type: CONSTRAINT; Schema: public; Owner: jamessherry
 --
 
 ALTER TABLE ONLY public.owners
     ADD CONSTRAINT owners_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pets pets_pkey; Type: CONSTRAINT; Schema: public; Owner: jamessherry
+--
+
+ALTER TABLE ONLY public.pets
+    ADD CONSTRAINT pets_pkey PRIMARY KEY (id);
 
 
 --
@@ -383,11 +386,11 @@ ALTER TABLE ONLY public.cars
 
 
 --
--- Name: fish fish_owner_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: pets fk_owner; Type: FK CONSTRAINT; Schema: public; Owner: jamessherry
 --
 
-ALTER TABLE ONLY public.fish
-    ADD CONSTRAINT fish_owner_fkey FOREIGN KEY (owner) REFERENCES public.fishermen(id);
+ALTER TABLE ONLY public.pets
+    ADD CONSTRAINT fk_owner FOREIGN KEY (owner) REFERENCES public.pets(id);
 
 
 --
