@@ -1,9 +1,12 @@
-const server = require('./server');
+const app = require('./server');
 
 const {
   PORT = 3000,
 } = process.env;
 
+const server = app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 
 process.on('uncaughtException', err => {
   console.log(`Uncaught Exception: ${err.message}`)
@@ -25,11 +28,3 @@ process.on('SIGINT', _ => {
     process.exit(0)
   }, 1000).unref() // Prevents the timeout from registering on event loop
 })
-
-
-
-server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
-
-
