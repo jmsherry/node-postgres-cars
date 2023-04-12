@@ -33,7 +33,9 @@ app.get("/api/v1/cars/:id?", (req, res) => {
       console.log("error", error);
       return res.status(500).send(error);
     }
-
+    if (id && !results?.rows?.length) {
+      return res.sendStatus(404);
+    }
     // console.log("results", results);
     res.status(200).json(results.rows);
   });
